@@ -1,4 +1,4 @@
-(function(){const a=document.createElement("link").relList;if(a&&a.supports&&a.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))t(e);new MutationObserver(e=>{for(const i of e)if(i.type==="childList")for(const l of i.addedNodes)l.tagName==="LINK"&&l.rel==="modulepreload"&&t(l)}).observe(document,{childList:!0,subtree:!0});function c(e){const i={};return e.integrity&&(i.integrity=e.integrity),e.referrerPolicy&&(i.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?i.credentials="include":e.crossOrigin==="anonymous"?i.credentials="omit":i.credentials="same-origin",i}function t(e){if(e.ep)return;e.ep=!0;const i=c(e);fetch(e.href,i)}})();const r=s=>{const a={manufacturing:`
+(function(){const i=document.createElement("link").relList;if(i&&i.supports&&i.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))r(t);new MutationObserver(t=>{for(const a of t)if(a.type==="childList")for(const l of a.addedNodes)l.tagName==="LINK"&&l.rel==="modulepreload"&&r(l)}).observe(document,{childList:!0,subtree:!0});function s(t){const a={};return t.integrity&&(a.integrity=t.integrity),t.referrerPolicy&&(a.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?a.credentials="include":t.crossOrigin==="anonymous"?a.credentials="omit":a.credentials="same-origin",a}function r(t){if(t.ep)return;t.ep=!0;const a=s(t);fetch(t.href,a)}})();const o=e=>{const i={manufacturing:`
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M4 20V8l5 3V8l5 3V8l6 4v8H4Z" fill="currentColor"/>
         <path d="M6 20v-5h3v5M11 20v-3h3v3M16 20v-4h2v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -48,7 +48,20 @@
         <path d="M18 4c-6 0-11 4.5-11 10 0 3.3 2.2 5 4.5 5 4.5 0 7.5-3.5 7.5-8.5V4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
         <path d="M7 18c2.5-2 5.5-4.5 10-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
-    `};return a[s]??a.shape};document.querySelector("#app").innerHTML=`
+    `};return i[e]??i.shape},k=[{file:"/1.jpg",label:"1"},{file:"/2.jpg",label:"2"},{file:"/3.heic",label:"3"},{file:"/4.heic",label:"4"},{file:"/5.heic",label:"5"}],w=e=>{const i=`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Ferro Blocks gallery placeholder ${e}">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f7efe6"/>
+          <stop offset="100%" stop-color="#dfb48c"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="800" rx="44" fill="url(#bg)"/>
+      <rect x="120" y="126" width="960" height="548" rx="36" fill="rgba(255,255,255,0.4)"/>
+      <text x="600" y="380" text-anchor="middle" fill="#7c3b1d" font-size="64" font-family="Arial, sans-serif" font-weight="700">Gallery Image ${e}</text>
+      <text x="600" y="450" text-anchor="middle" fill="#5f4434" font-size="28" font-family="Arial, sans-serif">Replace this placeholder with your photo</text>
+    </svg>
+  `;return`data:image/svg+xml;charset=UTF-8,${encodeURIComponent(i)}`},d=document.querySelector("#app"),x=`
   <div class="page-shell">
     <header class="topbar">
       <div class="brand">
@@ -61,6 +74,7 @@
         <a href="#benefits">Benefits</a>
         <a href="#timeline">Timeline</a>
         <a href="#comparison">Comparison</a>
+        <a href="/machines" data-route-link>Machines</a>
         <a href="#about">About</a>
         <a href="#enquiry">Enquiry</a>
       </nav>
@@ -150,6 +164,56 @@
               <p>The stack image highlights product storage, handling, and supply readiness.</p>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section class="section carousel-section" id="gallery">
+        <div class="section-heading">
+          <p class="section-tag">Gallery</p>
+          <h3>Image carousel for your numbered public assets.</h3>
+        </div>
+        <p class="section-text">
+          The carousel uses your five public assets: 1.jpg, 2.jpg, 3.heic, 4.heic, and 5.heic.
+          It will cycle through them automatically and let visitors browse manually as well.
+        </p>
+        <div class="carousel" data-carousel>
+          <div class="carousel-viewport">
+            <div class="carousel-track">
+              ${k.map(e=>{const i=w(e.label);return`
+                    <article class="carousel-slide">
+                      <div class="carousel-media">
+                        <img
+                          src="${e.file}"
+                          data-fallbacks="${e.file}|${i}"
+                          alt="Ferro Blocks gallery image ${e.label}"
+                        />
+                      </div>
+                      <div class="carousel-caption">
+                        <span>Image ${e.label}</span>
+                        <strong>Ferro Blocks visual ${e.label}</strong>
+                      </div>
+                    </article>
+                  `}).join("")}
+            </div>
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-button" type="button" data-carousel-prev aria-label="Previous image">
+              Previous
+            </button>
+            <div class="carousel-dots" aria-label="Gallery navigation">
+              ${k.map((e,i)=>`
+                    <button
+                      class="carousel-dot ${i===0?"is-active":""}"
+                      type="button"
+                      data-carousel-dot="${i}"
+                      aria-label="Go to image ${e.label}"
+                    ></button>
+                  `).join("")}
+            </div>
+            <button class="carousel-button" type="button" data-carousel-next aria-label="Next image">
+              Next
+            </button>
+          </div>
         </div>
       </section>
 
@@ -257,52 +321,52 @@
             <div class="cseb-head">CSEB bricks</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("manufacturing")}</span><span>Manufacturing</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("manufacturing")}</span><span>Manufacturing</span></div>
             <div>Only kiln-fired</div>
             <div>Cement-based, machine-pressed</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("strength")}</span><span>Strength</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("strength")}</span><span>Strength</span></div>
             <div>0.5 MPa</div>
             <div>5.4 MPa</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("absorption")}</span><span>Water absorption</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("absorption")}</span><span>Water absorption</span></div>
             <div>20% to 30%</div>
             <div>Up to 8% only</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("brass")}</span><span>Bricks per brass</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("brass")}</span><span>Bricks per brass</span></div>
             <div>600 bricks with breakage</div>
             <div>400 bricks, up to 20% cost saving</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("size")}</span><span>Size in inches</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("size")}</span><span>Size in inches</span></div>
             <div>6×3.5×8.5, 4×2.5×9</div>
             <div>6×4×9, 4×3×9</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("density")}</span><span>Density</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("density")}</span><span>Density</span></div>
             <div>16.5 kN/m³</div>
             <div>18.5 kN/m³, typically designed at ~20 kN/m³</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("edges")}</span><span>Edges</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("edges")}</span><span>Edges</span></div>
             <div>Blunt</div>
             <div>Sharp, neat finish</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("shape")}</span><span>Shape</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("shape")}</span><span>Shape</span></div>
             <div>Irregular</div>
             <div>Uniform, smooth wall friendly</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("color")}</span><span>Color</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("color")}</span><span>Color</span></div>
             <div>Black spots, debris visible</div>
             <div>Clean, attractive earthy color</div>
           </div>
           <div class="row">
-            <div class="criterion"><span class="criterion-icon">${r("environment")}</span><span>Environment</span></div>
+            <div class="criterion"><span class="criterion-icon">${o("environment")}</span><span>Environment</span></div>
             <div>Causes air pollution during firing</div>
             <div>100% pollution-free, eco-friendly</div>
           </div>
@@ -350,4 +414,80 @@
       </section>
     </main>
   </div>
-`;const n=document.querySelector("#enquiry");n==null||n.addEventListener("submit",s=>{s.preventDefault();const c=new FormData(n).get("name")||"there",t=n.querySelector(".submit-btn"),e=t.textContent;t.textContent=`Thanks, ${c}. Enquiry captured.`,t.disabled=!0,window.setTimeout(()=>{t.textContent=e,t.disabled=!1,n.reset()},2400)});const d=document.querySelector(".comparison-table"),o=document.querySelector(".comparison-toggle");o==null||o.addEventListener("click",()=>{const s=(d==null?void 0:d.classList.toggle("comparison-table--highlight-cseb"))??!1;o.setAttribute("aria-pressed",String(s)),o.textContent=s?"Show balanced view":"Highlight CSEB"});
+`,C=[{id:1,title:"Hydraulic Press",description:"Core machine for compressing stabilized earth blocks with consistent pressure.",specs:["Block compression","Uniform density","High output stability"]},{id:2,title:"Pan Mixer",description:"Blends soil, sand, and cement to prepare a consistent mix for pressing.",specs:["Material mixing","Batch consistency","Low wastage"]},{id:3,title:"Soil Crusher",description:"Breaks down raw material to create the right particle size for production.",specs:["Raw soil prep","Crushing stage","Finer feed quality"]},{id:4,title:"Pallet Trolley",description:"Moves freshly pressed bricks safely for drying, stacking, and dispatch.",specs:["Brick handling","Site movement","Safer logistics"]},{id:5,title:"Curing Rack",description:"Holds blocks during curing so strength and finish develop correctly.",specs:["Controlled curing","Stack storage","Quality support"]},{id:6,title:"Demoulding Setup",description:"Helps release finished bricks cleanly without damaging edges or shape.",specs:["Clean release","Sharp edges","Shape retention"]}],S=(e,i)=>{const s=`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" role="img" aria-label="${e}">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f5e8db"/>
+          <stop offset="100%" stop-color="#dfb18a"/>
+        </linearGradient>
+        <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#334155"/>
+          <stop offset="100%" stop-color="#0f172a"/>
+        </linearGradient>
+      </defs>
+      <rect width="960" height="720" rx="36" fill="url(#bg)"/>
+      <rect x="92" y="108" width="776" height="456" rx="28" fill="rgba(255,255,255,0.42)"/>
+      <g transform="translate(170 164)">
+        <rect x="36" y="240" width="544" height="40" rx="20" fill="#8b5e3c"/>
+        <rect x="86" y="92" width="168" height="156" rx="18" fill="url(#metal)"/>
+        <rect x="286" y="64" width="118" height="184" rx="18" fill="#b65a31"/>
+        <rect x="428" y="108" width="126" height="140" rx="18" fill="url(#metal)"/>
+        <rect x="324" y="10" width="28" height="72" rx="14" fill="#64748b"/>
+        <circle cx="145" cy="146" r="28" fill="#f59e0b"/>
+        <circle cx="488" cy="178" r="26" fill="#f59e0b"/>
+        <path d="M160 92h62v58h-62z" fill="#f8fafc" opacity="0.22"/>
+        <path d="M312 104h58v22h-58z" fill="#f8fafc" opacity="0.24"/>
+        <path d="M454 150h54v22h-54z" fill="#f8fafc" opacity="0.24"/>
+      </g>
+      <text x="88" y="76" fill="#7c3b1d" font-size="30" font-family="Arial, sans-serif" font-weight="700">${e}</text>
+      <text x="88" y="620" fill="#5f4434" font-size="22" font-family="Arial, sans-serif" font-weight="600">${i}</text>
+    </svg>
+  `;return`data:image/svg+xml;charset=UTF-8,${encodeURIComponent(s)}`},B=e=>[`/machines/${e}.png`,`/machines/${e}.jpg`,`/machines/${e}.jpeg`,`/machines/${e}.webp`],M=`
+  <a href="/" data-route-link>Home</a>
+  <a href="/machines" data-route-link>Machines</a>
+`,E=`
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div>
+          <p class="eyebrow">Machine line-up</p>
+          <h1>Ferro Blocks Machines</h1>
+        </div>
+      </div>
+      <nav class="nav">
+        ${M}
+      </nav>
+    </header>
+
+    <main>
+      <section class="section" id="machines-grid">
+        <div class="section-heading">
+          <p class="section-tag">Machines</p>
+          <h3>Available equipment for CSEB production and handling.</h3>
+        </div>
+        <div class="machine-grid">
+          ${C.map(e=>{const i=B(e.id).join("|"),s=S(e.title,e.specs.join(" · "));return`
+                <article class="machine-card">
+                  <div class="machine-visual">
+                    <img
+                      src="/machines/${e.id}.png"
+                      data-fallbacks="${i}|${s}"
+                      alt="${e.title}"
+                    />
+                  </div>
+                  <div class="machine-copy">
+                    <p class="machine-kicker">Machine ${e.id}</p>
+                    <h4>${e.title}</h4>
+                    <p>${e.description}</p>
+                    <ul class="machine-specs">
+                      ${e.specs.map(r=>`<li>${r}</li>`).join("")}
+                    </ul>
+                  </div>
+                </article>
+              `}).join("")}
+        </div>
+      </section>
+    </main>
+  </div>
+`;function $(e=d){e.querySelectorAll("[data-route-link]").forEach(i=>{i.addEventListener("click",s=>{const r=new URL(i.href,window.location.origin);r.origin===window.location.origin&&(s.preventDefault(),window.history.pushState({},"",r.pathname),m())})})}function q(e=d){e.querySelectorAll("[data-fallbacks]").forEach(i=>{const s=i.dataset.fallbacks.split("|");let r=0;i.addEventListener("error",()=>{r+=1,r<s.length&&(i.src=s[r])})})}function F(e=d){const i=Array.from(e.querySelectorAll(".topbar, .hero, .section, .split, .machine-card, .brick-card, .hero-metrics article, .benefit-grid article, .timeline article, .about-card, .enquiry-card, .carousel-viewport"));if(i.forEach((r,t)=>{r.classList.add("reveal"),r.style.setProperty("--reveal-delay",`${Math.min(t*70,420)}ms`)}),!("IntersectionObserver"in window)){i.forEach(r=>r.classList.add("is-visible"));return}const s=new IntersectionObserver(r=>{r.forEach(t=>{t.isIntersecting&&(t.target.classList.add("is-visible"),s.unobserve(t.target))})},{threshold:.14,rootMargin:"0px 0px -8% 0px"});i.forEach(r=>s.observe(r))}function L(e=d){const i=e.querySelector("#enquiry");i==null||i.addEventListener("submit",a=>{a.preventDefault();const p=new FormData(i).get("name")||"there",n=i.querySelector(".submit-btn"),v=n.textContent;n.textContent=`Thanks, ${p}. Enquiry captured.`,n.disabled=!0,window.setTimeout(()=>{n.textContent=v,n.disabled=!1,i.reset()},2400)});const s=e.querySelector(".comparison-table"),r=e.querySelector(".comparison-toggle");r==null||r.addEventListener("click",()=>{const a=(s==null?void 0:s.classList.toggle("comparison-table--highlight-cseb"))??!1;r.setAttribute("aria-pressed",String(a)),r.textContent=a?"Show balanced view":"Highlight CSEB"});const t=e.querySelector("[data-carousel]");if(t){const a=t.querySelector(".carousel-track"),l=Array.from(t.querySelectorAll(".carousel-slide")),p=t.querySelector("[data-carousel-prev]"),n=t.querySelector("[data-carousel-next]"),v=Array.from(t.querySelectorAll("[data-carousel-dot]"));let c=0,g;const u=f=>{c=(f+l.length)%l.length,a.style.transform=`translateX(-${c*100}%)`,v.forEach((b,y)=>{b.classList.toggle("is-active",y===c)})},h=()=>{window.clearInterval(g),g=window.setInterval(()=>u(c+1),4500)};p==null||p.addEventListener("click",()=>{u(c-1),h()}),n==null||n.addEventListener("click",()=>{u(c+1),h()}),v.forEach(f=>{f.addEventListener("click",()=>{const b=Number(f.dataset.carouselDot);u(b),h()})}),t.addEventListener("mouseenter",()=>window.clearInterval(g)),t.addEventListener("mouseleave",h),u(0),h()}}function m(){const e=window.location.pathname==="/machines";d.innerHTML=e?E:x,document.title=e?"Ferro Blocks | Machines":"Ferro Blocks | CSEB Brick Manufacturer",d.querySelectorAll("[data-route-link]").forEach(i=>{new URL(i.getAttribute("href"),window.location.origin).pathname===window.location.pathname?i.setAttribute("aria-current","page"):i.removeAttribute("aria-current")}),$(),q(),F(),e||L()}window.addEventListener("popstate",m);m();

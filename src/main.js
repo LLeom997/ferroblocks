@@ -95,6 +95,32 @@ const compareIcon = (type) => {
   return icons[type] ?? icons.shape;
 };
 
+const carouselFiles = [
+  { file: '/1.jpg', label: '1' },
+  { file: '/2.jpg', label: '2' },
+  { file: '/3.heic', label: '3' },
+  { file: '/4.heic', label: '4' },
+  { file: '/5.heic', label: '5' },
+];
+
+const carouselFallback = (label) => {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Ferro Blocks gallery placeholder ${label}">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f7efe6"/>
+          <stop offset="100%" stop-color="#dfb48c"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="800" rx="44" fill="url(#bg)"/>
+      <rect x="120" y="126" width="960" height="548" rx="36" fill="rgba(255,255,255,0.4)"/>
+      <text x="600" y="380" text-anchor="middle" fill="#7c3b1d" font-size="64" font-family="Arial, sans-serif" font-weight="700">Gallery Image ${label}</text>
+      <text x="600" y="450" text-anchor="middle" fill="#5f4434" font-size="28" font-family="Arial, sans-serif">Replace this placeholder with your photo</text>
+    </svg>
+  `;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+};
+
 const factoryIllustration = `
   <svg viewBox="0 0 960 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ferro Blocks factory illustration">
     <defs>
@@ -149,7 +175,8 @@ const factoryIllustration = `
   </svg>
 `;
 
-document.querySelector('#app').innerHTML = `
+const app = document.querySelector('#app');
+const homePageMarkup = `
   <div class="page-shell">
     <header class="topbar">
       <div class="brand">
@@ -162,6 +189,7 @@ document.querySelector('#app').innerHTML = `
         <a href="#benefits">Benefits</a>
         <a href="#timeline">Timeline</a>
         <a href="#comparison">Comparison</a>
+        <a href="/machines" data-route-link>Machines</a>
         <a href="#about">About</a>
         <a href="#enquiry">Enquiry</a>
       </nav>
@@ -251,6 +279,61 @@ document.querySelector('#app').innerHTML = `
               <p>The stack image highlights product storage, handling, and supply readiness.</p>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section class="section carousel-section" id="gallery">
+        <div class="section-heading">
+          <p class="section-tag">Images</p>
+          <h3>Images</h3>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel-viewport">
+            <div class="carousel-track">
+              ${carouselFiles
+                .map((image) => {
+                  const fallback = carouselFallback(image.label);
+                  return `
+                    <article class="carousel-slide">
+                      <div class="carousel-media">
+                        <img
+                          src="${image.file}"
+                          data-fallbacks="${image.file}|${fallback}"
+                          alt="Ferro Blocks gallery image ${image.label}"
+                        />
+                      </div>
+                      <div class="carousel-caption">
+                        <span>Image ${image.label}</span>
+                        <strong>Ferro Blocks visual ${image.label}</strong>
+                      </div>
+                    </article>
+                  `;
+                })
+                .join('')}
+            </div>
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-button" type="button" data-carousel-prev aria-label="Previous image">
+              Previous
+            </button>
+            <div class="carousel-dots" aria-label="Gallery navigation">
+              ${carouselFiles
+                .map(
+                  (image, index) => `
+                    <button
+                      class="carousel-dot ${index === 0 ? 'is-active' : ''}"
+                      type="button"
+                      data-carousel-dot="${index}"
+                      aria-label="Go to image ${image.label}"
+                    ></button>
+                  `,
+                )
+                .join('')}
+            </div>
+            <button class="carousel-button" type="button" data-carousel-next aria-label="Next image">
+              Next
+            </button>
+          </div>
         </div>
       </section>
 
@@ -453,28 +536,303 @@ document.querySelector('#app').innerHTML = `
   </div>
 `;
 
-const form = document.querySelector('#enquiry');
-form?.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const data = new FormData(form);
-  const name = data.get('name') || 'there';
-  const submitBtn = form.querySelector('.submit-btn');
-  const originalText = submitBtn.textContent;
-  submitBtn.textContent = `Thanks, ${name}. Enquiry captured.`;
-  submitBtn.disabled = true;
+const machineCards = [
+  {
+    id: 1,
+    title: 'Hydraulic Press',
+    description: 'Core machine for compressing stabilized earth blocks with consistent pressure.',
+    specs: ['Block compression', 'Uniform density', 'High output stability'],
+  },
+  {
+    id: 2,
+    title: 'Pan Mixer',
+    description: 'Blends soil, sand, and cement to prepare a consistent mix for pressing.',
+    specs: ['Material mixing', 'Batch consistency', 'Low wastage'],
+  },
+  {
+    id: 3,
+    title: 'Soil Crusher',
+    description: 'Breaks down raw material to create the right particle size for production.',
+    specs: ['Raw soil prep', 'Crushing stage', 'Finer feed quality'],
+  },
+  {
+    id: 4,
+    title: 'Pallet Trolley',
+    description: 'Moves freshly pressed bricks safely for drying, stacking, and dispatch.',
+    specs: ['Brick handling', 'Site movement', 'Safer logistics'],
+  },
+  {
+    id: 5,
+    title: 'Curing Rack',
+    description: 'Holds blocks during curing so strength and finish develop correctly.',
+    specs: ['Controlled curing', 'Stack storage', 'Quality support'],
+  },
+  {
+    id: 6,
+    title: 'Demoulding Setup',
+    description: 'Helps release finished bricks cleanly without damaging edges or shape.',
+    specs: ['Clean release', 'Sharp edges', 'Shape retention'],
+  },
+];
 
-  window.setTimeout(() => {
-    submitBtn.textContent = originalText;
-    submitBtn.disabled = false;
-    form.reset();
-  }, 2400);
-});
+const machinePlaceholder = (title, subtitle) => {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" role="img" aria-label="${title}">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f5e8db"/>
+          <stop offset="100%" stop-color="#dfb18a"/>
+        </linearGradient>
+        <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#334155"/>
+          <stop offset="100%" stop-color="#0f172a"/>
+        </linearGradient>
+      </defs>
+      <rect width="960" height="720" rx="36" fill="url(#bg)"/>
+      <rect x="92" y="108" width="776" height="456" rx="28" fill="rgba(255,255,255,0.42)"/>
+      <g transform="translate(170 164)">
+        <rect x="36" y="240" width="544" height="40" rx="20" fill="#8b5e3c"/>
+        <rect x="86" y="92" width="168" height="156" rx="18" fill="url(#metal)"/>
+        <rect x="286" y="64" width="118" height="184" rx="18" fill="#b65a31"/>
+        <rect x="428" y="108" width="126" height="140" rx="18" fill="url(#metal)"/>
+        <rect x="324" y="10" width="28" height="72" rx="14" fill="#64748b"/>
+        <circle cx="145" cy="146" r="28" fill="#f59e0b"/>
+        <circle cx="488" cy="178" r="26" fill="#f59e0b"/>
+        <path d="M160 92h62v58h-62z" fill="#f8fafc" opacity="0.22"/>
+        <path d="M312 104h58v22h-58z" fill="#f8fafc" opacity="0.24"/>
+        <path d="M454 150h54v22h-54z" fill="#f8fafc" opacity="0.24"/>
+      </g>
+      <text x="88" y="76" fill="#7c3b1d" font-size="30" font-family="Arial, sans-serif" font-weight="700">${title}</text>
+      <text x="88" y="620" fill="#5f4434" font-size="22" font-family="Arial, sans-serif" font-weight="600">${subtitle}</text>
+    </svg>
+  `;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+};
 
-const comparisonTable = document.querySelector('.comparison-table');
-const comparisonToggle = document.querySelector('.comparison-toggle');
+const machineSources = (id) => [`/machines/${id}.png`, `/machines/${id}.jpg`, `/machines/${id}.jpeg`, `/machines/${id}.webp`];
 
-comparisonToggle?.addEventListener('click', () => {
-  const isHighlighted = comparisonTable?.classList.toggle('comparison-table--highlight-cseb') ?? false;
-  comparisonToggle.setAttribute('aria-pressed', String(isHighlighted));
-  comparisonToggle.textContent = isHighlighted ? 'Show balanced view' : 'Highlight CSEB';
-});
+const homeNavMarkup = `
+  <a href="#benefits">Benefits</a>
+  <a href="#timeline">Timeline</a>
+  <a href="#comparison">Comparison</a>
+  <a href="/machines" data-route-link>Machines</a>
+  <a href="#about">About</a>
+  <a href="#enquiry">Enquiry</a>
+`;
+
+const machinesNavMarkup = `
+  <a href="/" data-route-link>Home</a>
+  <a href="/machines" data-route-link>Machines</a>
+`;
+
+const machinesPageMarkup = `
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div>
+          <p class="eyebrow">Machine line-up</p>
+          <h1>Ferro Blocks Machines</h1>
+        </div>
+      </div>
+      <nav class="nav">
+        ${machinesNavMarkup}
+      </nav>
+    </header>
+
+    <main>
+      <section class="section" id="machines-grid">
+        <div class="section-heading">
+          <p class="section-tag">Machines</p>
+          <h3>Available equipment for CSEB production and handling.</h3>
+        </div>
+        <div class="machine-grid">
+          ${machineCards
+            .map((machine) => {
+              const fallbacks = machineSources(machine.id).join('|');
+              const placeholder = machinePlaceholder(machine.title, machine.specs.join(' · '));
+              return `
+                <article class="machine-card">
+                  <div class="machine-visual">
+                    <img
+                      src="/machines/${machine.id}.png"
+                      data-fallbacks="${fallbacks}|${placeholder}"
+                      alt="${machine.title}"
+                    />
+                  </div>
+                  <div class="machine-copy">
+                    <p class="machine-kicker">Machine ${machine.id}</p>
+                    <h4>${machine.title}</h4>
+                    <p>${machine.description}</p>
+                    <ul class="machine-specs">
+                      ${machine.specs.map((spec) => `<li>${spec}</li>`).join('')}
+                    </ul>
+                  </div>
+                </article>
+              `;
+            })
+            .join('')}
+        </div>
+      </section>
+    </main>
+  </div>
+`;
+
+function bindRouteLinks(root = app) {
+  root.querySelectorAll('[data-route-link]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const url = new URL(link.href, window.location.origin);
+      if (url.origin !== window.location.origin) return;
+      event.preventDefault();
+      window.history.pushState({}, '', url.pathname);
+      renderRoute();
+    });
+  });
+}
+
+function bindImageFallbacks(root = app) {
+  root.querySelectorAll('[data-fallbacks]').forEach((image) => {
+    const fallbackSources = image.dataset.fallbacks.split('|');
+    let sourceIndex = 0;
+
+    image.addEventListener('error', () => {
+      sourceIndex += 1;
+      if (sourceIndex < fallbackSources.length) {
+        image.src = fallbackSources[sourceIndex];
+      }
+    });
+  });
+}
+
+function bindRevealAnimations(root = app) {
+  const revealTargets = Array.from(
+    root.querySelectorAll(
+      '.topbar, .hero, .section, .split, .machine-card, .brick-card, .hero-metrics article, .benefit-grid article, .timeline article, .about-card, .enquiry-card, .carousel-viewport',
+    ),
+  );
+
+  revealTargets.forEach((element, index) => {
+    element.classList.add('reveal');
+    element.style.setProperty('--reveal-delay', `${Math.min(index * 70, 420)}ms`);
+  });
+
+  if (!('IntersectionObserver' in window)) {
+    revealTargets.forEach((element) => element.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.14,
+      rootMargin: '0px 0px -8% 0px',
+    },
+  );
+
+  revealTargets.forEach((element) => observer.observe(element));
+}
+
+function bindHomeInteractions(root = app) {
+  const form = root.querySelector('#enquiry');
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const name = data.get('name') || 'there';
+    const submitBtn = form.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = `Thanks, ${name}. Enquiry captured.`;
+    submitBtn.disabled = true;
+
+    window.setTimeout(() => {
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+      form.reset();
+    }, 2400);
+  });
+
+  const comparisonTable = root.querySelector('.comparison-table');
+  const comparisonToggle = root.querySelector('.comparison-toggle');
+
+  comparisonToggle?.addEventListener('click', () => {
+    const isHighlighted = comparisonTable?.classList.toggle('comparison-table--highlight-cseb') ?? false;
+    comparisonToggle.setAttribute('aria-pressed', String(isHighlighted));
+    comparisonToggle.textContent = isHighlighted ? 'Show balanced view' : 'Highlight CSEB';
+  });
+
+  const carousel = root.querySelector('[data-carousel]');
+  if (carousel) {
+    const track = carousel.querySelector('.carousel-track');
+    const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+    const prevButton = carousel.querySelector('[data-carousel-prev]');
+    const nextButton = carousel.querySelector('[data-carousel-next]');
+    const dots = Array.from(carousel.querySelectorAll('[data-carousel-dot]'));
+    let activeIndex = 0;
+    let autoplayId;
+
+    const updateCarousel = (nextIndex) => {
+      activeIndex = (nextIndex + slides.length) % slides.length;
+      track.style.transform = `translateX(-${activeIndex * 100}%)`;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === activeIndex);
+      });
+    };
+
+    const startAutoplay = () => {
+      window.clearInterval(autoplayId);
+      autoplayId = window.setInterval(() => updateCarousel(activeIndex + 1), 4500);
+    };
+
+    prevButton?.addEventListener('click', () => {
+      updateCarousel(activeIndex - 1);
+      startAutoplay();
+    });
+
+    nextButton?.addEventListener('click', () => {
+      updateCarousel(activeIndex + 1);
+      startAutoplay();
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const nextIndex = Number(dot.dataset.carouselDot);
+        updateCarousel(nextIndex);
+        startAutoplay();
+      });
+    });
+
+    carousel.addEventListener('mouseenter', () => window.clearInterval(autoplayId));
+    carousel.addEventListener('mouseleave', startAutoplay);
+
+    updateCarousel(0);
+    startAutoplay();
+  }
+}
+
+function renderRoute() {
+  const isMachinesRoute = window.location.pathname === '/machines';
+  app.innerHTML = isMachinesRoute ? machinesPageMarkup : homePageMarkup;
+  document.title = isMachinesRoute ? 'Ferro Blocks | Machines' : 'Ferro Blocks | CSEB Brick Manufacturer';
+  app.querySelectorAll('[data-route-link]').forEach((link) => {
+    const url = new URL(link.getAttribute('href'), window.location.origin);
+    if (url.pathname === window.location.pathname) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  });
+  bindRouteLinks();
+  bindImageFallbacks();
+  bindRevealAnimations();
+  if (!isMachinesRoute) {
+    bindHomeInteractions();
+  }
+}
+
+window.addEventListener('popstate', renderRoute);
+renderRoute();
