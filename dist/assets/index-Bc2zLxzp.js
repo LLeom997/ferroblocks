@@ -169,13 +169,9 @@
 
       <section class="section carousel-section" id="gallery">
         <div class="section-heading">
-          <p class="section-tag">Gallery</p>
-          <h3>Image carousel for your numbered public assets.</h3>
+          <p class="section-tag">Images</p>
+          <h3>Images</h3>
         </div>
-        <p class="section-text">
-          The carousel uses your five public assets: 1.jpg, 2.jpg, 3.heic, 4.heic, and 5.heic.
-          It will cycle through them automatically and let visitors browse manually as well.
-        </p>
         <div class="carousel" data-carousel>
           <div class="carousel-viewport">
             <div class="carousel-track">
