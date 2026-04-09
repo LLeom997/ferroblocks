@@ -844,6 +844,38 @@ svg {
   margin-bottom: 0;
 }
 
+.director-card {
+  display: grid;
+  gap: 6px;
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(175, 77, 40, 0.16);
+  background: rgba(175, 77, 40, 0.08);
+}
+
+.director-card strong {
+  color: var(--text);
+  font-size: 1.06rem;
+}
+
+.director-card a {
+  color: var(--brand-strong);
+  font-weight: 800;
+}
+
+.director-label {
+  color: var(--brand);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.director-card-inline {
+  margin-top: 6px;
+}
+
 .enquiry-card {
   display: grid;
   gap: 14px;

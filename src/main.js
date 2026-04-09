@@ -96,10 +96,10 @@ const compareIcon = (type) => {
 };
 
 const carouselFiles = [
-  { file: '/1.jpg', label: '1' },
+  { file: '/1-1.png', label: '1' },
   { file: '/2.jpg', label: '2' },
-  { file: '/3.heic', label: '3' },
-  { file: '/4.heic', label: '4' },
+  { file: '/3-1.png', label: '3' },
+  { file: '/4-1.png', label: '4' },
   { file: '/5.heic', label: '5' },
 ];
 
@@ -507,6 +507,11 @@ const homePageMarkup = `
             brick that helps reduce waste, improve build quality, and support responsible
             construction.
           </p>
+          <div class="director-card">
+            <span class="director-label">Director</span>
+            <strong>Maitreya Gokhale</strong>
+            <a href="tel:+917030361627">7030361627</a>
+          </div>
         </div>
 
         <form class="enquiry-card" id="enquiry">
@@ -530,6 +535,11 @@ const homePageMarkup = `
           </label>
           <button class="btn primary submit-btn" type="submit">Submit enquiry</button>
           <p class="form-note">We&apos;ll treat this as a front-end enquiry form and route it to your sales channel later.</p>
+          <div class="director-card director-card-inline">
+            <span class="director-label">Director</span>
+            <strong>Maitreya Gokhale</strong>
+            <a href="tel:+917030361627">7030361627</a>
+          </div>
         </form>
       </section>
     </main>
